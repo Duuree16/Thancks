@@ -3,39 +3,88 @@ import tankImg from '../imgs/tank.png'
 import { useEffect, useState } from 'react'
 
 export const Tank = () => {
-    const [posX,setPosX] = useState(5)
-    const [posY,setPosY] = useState(10)
-    const [velY,setVelY] = useState(-0)
-    const [velX,setVelX] = useState(-0)
+    const [posX, setPosX] = useState(5)
+    const [posY, setPosY] = useState(10)
+    const [direction, setDirection] = useState('')
+    const [look, setLook] = useState('')
+    const velocity = 0.25
+    const keys = {
+        a: false,
+        s: false,
+        d: false,
+        w: false,
+    }
 
-    useEffect(()=>{
-        document.addEventListener('keydown',handleKey,true)
-        setInterval(()=>{
-            setPosX(prev => prev + velX)
-            setPosY(prev => prev + velY)
-            console.log(velX,velY)
-        },1000)
-    },[])
+    useEffect(() => {
+        document.addEventListener('keydown', handleKey, true)
+        document.addEventListener('keyup', handleKeyUp, true)
+        const interval = setInterval(() => {
+            switch (direction) {
+                case 'up':
+                    setPosY(prev => prev - velocity)
+                    break
+                case 'down':
+                    setPosY(prev => prev + velocity)
+                    break
+                case 'right':
+                    setPosX(prev => prev - velocity)
+                    break
+                case 'left':
+                    setPosX(prev => prev + velocity)
+                    break
+                case '':
+                    break
+            }
+        }, 100)
+        return () => {
+            clearInterval(interval)
+        }
+    }, [direction])
     const handleKey = (e) => {
-        let vel1 = 0
-        let vel2 = 0
-        if(e.key === 'w'){
-            vel1 = -0.5
+        if (e.key === 'w') {
+            setDirection('up')
+            setLook('up')
+            keys.w = true
         }
-        if(e.key === 's'){
-            vel1 = 0.5
+        if (e.key === 's') {
+            setDirection('down')
+            setLook('down')
+            keys.s = true
         }
-        if(e.key === 'a'){
-            vel2 = -0.5
+        if (e.key === 'a') {
+            setDirection('right')
+            setLook('right')
+            keys.a = true
         }
-        if(e.key === 'd'){
-            vel2 = 0.5
+        if (e.key === 'd') {
+            setDirection('left')
+            setLook('left')
+            keys.d = true
         }
-        setVelX(vel2)
-        setVelY(vel1)
-        
 
     }
-    // eslint-disable-next-line jsx-a11y/alt-text
-    return <><img src={tankImg} className={styles.tank} style={{top:`${posY * 50}px`,left:`${posX * 50}px`}}/></>
+
+    const handleKeyUp = (e) => {
+        if (e.key === 'w') {
+            keys.w = false
+        }
+        if (e.key === 's') {
+            keys.s = false
+        }
+        if (e.key === 'a') {
+            keys.a = false
+        }
+        if (e.key === 'd') {
+            keys.d = false
+        }
+        if (
+            !keys.w &&
+            !keys.a &&
+            !keys.s &&
+            keys.d
+        ) {
+            setDirection('')
+        }
+    }
+    return <><img src={tankImg} className={[styles.tank, styles[look]].join(' ')} style={{ top: `${posY * 50}px`, left: `${posX * 50}px` }} /></>
 }

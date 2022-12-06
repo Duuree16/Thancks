@@ -5,9 +5,10 @@
   place-items: center;
 }
 
-.container{
+.container {
   width: 550px;
   position: relative;
+  overflow: hidden;
   height: 550px;
   background-color: black;
 }

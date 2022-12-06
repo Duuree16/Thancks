@@ -1,6 +1,25 @@
-.tank{
+.tank {
     width: 50px;
     height: 50px;
-    transform: rotate(180deg);
     position: absolute;
+}
+
+.down {
+    transform: rotate(180deg);
+    transition: 10ms;
+}
+
+.up {
+    transform: rotate(0deg);
+    transition: 10ms;
+}
+
+.left {
+    transform: rotate(90deg);
+    transition: 10ms;
+}
+
+.right {
+    transform: rotate(-90deg);
+    transition: 10ms;
 }
