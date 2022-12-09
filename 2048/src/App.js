@@ -1,13 +1,11 @@
 
 import './App.css';
-import { Tank } from './Components';
+import { Field } from './babies';
 
 function App() {
   return (
     <div className="App">
-      <div className='container'>
-        <Tank/>
-      </div>
+      <Field></Field>
     </div>
   );
 }
